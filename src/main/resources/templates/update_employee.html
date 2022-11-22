@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec ="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+  <title>Employee managment System</title>
+
+
+  <style>
+    .error{
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Importing Navbar	-->
+<div th:insert="navbar.html :: navbar"></div>
+
+
+
+
+
+<div class="container" sec:authorize="hasRole('ROLE_ADMIN')">
+
+  <div th:if="${param.successupdate}">
+    <div class="alert alert-info">You are successfully updated employee! </div>
+  </div>
+
+
+  <hr>
+  <h2>Update Employee</h2>
+  <form action="#" th:action="@{/updateEmployee}" th:object ="${employee}"
+        method="POST">
+
+          <!--    Add hidden form field to handle update-->
+    <input type="hidden" th:field="*{id}" />
+
+
+    <input type="text" th:field ="*{firstName}"  class="form-control mb-4 col-4">
+    <span th:if="${#fields.hasErrors('firstName')}" th:errorclass="error" th:errors="*{firstName}"></span>
+
+    <input type="text" th:field ="*{lastName}"  class="form-control mb-4 col-4">
+    <span th:if="${#fields.hasErrors('lastName')}" th:errorclass="error" th:errors="*{lastName}"></span>
+
+    <input type="number" min="0" max="999999999999999" th:field ="*{salary}"  class="form-control mb-4 col-4">
+    <span th:if="${#fields.hasErrors('salary')}" th:errorclass="error" th:errors="*{salary}"></span>
+
+    <input type="date" th:field ="*{birthday}"  class="form-control mb-4 col-4">
+    <span th:if="${#fields.hasErrors('birthday')}" th:errorclass="error" th:errors="*{birthday}"></span>
+
+
+    <p>
+      Department
+      <br>
+      <select  name="departmentName">
+        <option th:each="departmentName : ${listDepartments2}"
+                th:text="${departmentName.departmentName}"
+        />
+      </select>
+    </p>
+
+
+
+    <button type="submit"  class="btn btn-outline-info col-2"> Update Employee</button>
+    <a th:href = "@{/showFormForDetails/{id}(id=${employee.id})}" class="btn btn-outline-danger col-2">Cancel</a>
+  </form>
+  <hr>
+
+</div>
+</body>
+</html>

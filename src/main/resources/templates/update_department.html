@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec ="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+  <title>Employee managment System</title>
+
+
+  <style>
+    .error{
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Importing Navbar	-->
+<div th:insert="navbar.html :: navbar"></div>
+
+
+
+
+
+<div class="container"sec:authorize="hasRole('ROLE_ADMIN')">
+
+  <hr>
+
+  <div th:if="${param.error}">
+    <div class="alert alert-danger">Same department already exist</div>
+  </div>
+
+  <div th:if="${param.success}">
+    <div class="alert alert-info">You are successfully updated the department ! </div>
+  </div>
+
+  <h2>Update Department</h2>
+  <form action="#" th:action="@{/update_department}" th:object ="${department}"
+        method="POST">
+
+          <!--    Add hidden form field to handle update-->
+    <input type="hidden" th:field="*{id}" />
+
+
+    <input type="text" th:field ="*{DepartmentName}"  class="form-control mb-4 col-4">
+
+
+
+
+
+    <button type="submit" class="btn btn-outline-info col-2"> Update Employee</button>
+    <a th:href = "@{/DepartmentList}" class="btn btn-outline-danger col-2">Cancel</a>
+  </form>
+  <hr>
+
+</div>
+</body>
+</html>

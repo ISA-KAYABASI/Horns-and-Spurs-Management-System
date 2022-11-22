@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec ="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+    <title>Employee Management System</title>
+
+    <style>
+        .error{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Importing Navbar	-->
+<div th:insert="navbar.html :: navbar"></div>
+
+
+
+
+<div class="container" sec:authorize="hasRole('ROLE_ADMIN')">
+     <br>
+    <div th:if="${param.successadd}">
+        <div class="alert alert-info">You are successfully save new employee! </div>
+    </div>
+
+    <hr>
+    <h2>Save Employee</h2>
+    <form action="#" th:action="@{/saveEmployee}" th:object ="${employee}" method="POST">
+
+        <p>First Name
+            <input type="text" th:field ="*{firstName}" placeholder="Employee First Name" class="form-control mb-4 col-4">
+        <span th:if="${#fields.hasErrors('firstName')}" th:errorclass="error" th:errors="*{firstName}"></span>
+        </p>
+
+        <p>Last Name
+            <input type="text" th:field ="*{lastName}" placeholder="Employee Last Name" class="form-control mb-4 col-4">
+            <span th:if="${#fields.hasErrors('lastName')}" th:errorclass="error" th:errors="*{lastName}"></span>
+        </p>
+
+        <p>Salary
+            <input type="number" min="0" max="999999999999999" inputmode="decimal" th:field ="*{salary}" placeholder="Employee Salary" class="form-control mb-4 col-4">
+            <span th:if="${#fields.hasErrors('salary')}" th:errorclass="error" th:errors="*{salary}"></span>
+        </p>
+
+        <p>Birthdate
+            <input type="date" min="1900-01-01"  th:field ="*{birthday}" placeholder="Employee birthday" class="form-control mb-4 col-4">
+            <span th:if="${#fields.hasErrors('birthday')}" th:errorclass="error" th:errors="*{birthday}"></span>
+
+        </p>
+
+        <p>
+            Department
+            <br>
+            <select  name="departmentName">
+                <option th:each="departmentName : ${listDepartments2}"
+                        th:text="${departmentName.departmentName}"
+                      />
+            </select>
+        </p>
+
+
+        <button type="submit" class="btn btn-outline-info col-2"> Save</button>
+        <button type="reset" class="btn btn-outline-warning col-2"> Reset</button>
+        <a th:href = "@{/EmployeeList}" class="btn btn-outline-danger col-2">Return</a>
+
+    </form>
+
+</div>
+</body>
+</html>
